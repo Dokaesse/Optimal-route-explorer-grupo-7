@@ -63,13 +63,13 @@ class Graph:
             ax.scatter(k.x, k.y, color='red')
             ax.text(k.x+0.3,k.y+0.3, k.name, color='green', size=12)
 
-        for k in range(len(self.segments)):
-            #print(self.segments[k].__dict__)
-            x_org, y_org  = self.segments[k].or_node.x, self.segments[k].or_node.y
-            x_dest,y_dest  = self.segments[k].dest_node.x, self.segments[k].dest_node.y
+        for segment in self.segments:
+            #print(self.segments[segment].__dict__)
+            x_org, y_org  = segment.or_node.x, segment.or_node.y
+            x_dest,y_dest  = segment.dest_node.x, segment.dest_node.y
             vx,vy  = [x_org, x_dest], [y_org, y_dest]
             x_mid,y_mid  = (x_org + x_dest) / 2, (y_org + y_dest) / 2
 
             plt.plot(vx,vy,color='blue')
-            ax.text(x_mid, y_mid, round(self.segments[k].cost, 2), color='black', fontsize=10, ha='center', va='center')
+            ax.text(x_mid, y_mid, round(segment.cost, 2), color='black', fontsize=10, ha='center', va='center')
         plt.show()
