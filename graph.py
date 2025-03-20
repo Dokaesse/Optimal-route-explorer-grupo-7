@@ -4,7 +4,7 @@ from segment import *
 import matplotlib.pyplot as plt
 
 class Graph:
-    def __init__(self): #Inicializamos la clase
+    def __init__(self): #Inicializamos la clas
         self.nodes = []
         self.segments = []
     def add_node(self, n): #Añadimos nodos a nuestra lista de nodos
