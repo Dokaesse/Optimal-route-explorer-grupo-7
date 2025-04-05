@@ -2,7 +2,7 @@
 import tkinter as tk
 from interface_functions import *
 
-def actualizar_listas():
+def actualizar_listas(): #función que utilizaremos para poder actualizar las listas de la interfaz siempre que cambiemos algún punto o segmento
     print('actualizando listas...')
     # Obtener las nuevas listas de nombres
     nombres_nodos = [node.name for node in g.nodes]
@@ -69,17 +69,17 @@ button_save_run_fileplot.rowconfigure(0, weight=1)
 button_save_run_fileplot.rowconfigure(1, weight=1)
 button_save_run_fileplot.rowconfigure(2, weight=1)
 
-#Botones de  guardado/cargar y limpiar (las funciones asociadas en interface_functions.py)
-run_button = tk.Button(button_save_run_fileplot, text='Cargar archivo', command=lambda: (load_flight_plan_display(plot_display), actualizar_listas()))
+#Botones de guardado/cargar y limpiar (las funciones asociadas en interface_functions.py)
+run_button = tk.Button(button_save_run_fileplot, text='Cargar archivo', command=lambda: (load_flight_plan_display(plot_display, actualizar_listas), actualizar_listas())) ##En toda función que cambiemos nodos y segmentos llamaremos a actualizar_lista(), también lo pasaremos como argumento(explicación en línea 143)
 run_button.grid(row=0, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.S + tk.W)
 
-save_button = tk.Button(button_save_run_fileplot, text='Guardar archivo', command=lambda: save_flight_plan_button())
+save_button = tk.Button(button_save_run_fileplot, text='Guardar archivo', command=lambda: save_flight_plan_button()) #Todas las funciones de los botones las llamamos utilizando lambda que hace que la función solo se ejecute una vez y solo cuando se llama
 save_button.grid(row=1, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.S + tk.W)
 
-clean_button = tk.Button(button_save_run_fileplot, text='Limpiar el plot', command=lambda: (clean_flight_plan(plot_display, actualizar_listas), actualizar_listas()))
+clean_button = tk.Button(button_save_run_fileplot, text='Limpiar el plot', command=lambda: (clean_flight_plan(plot_display, actualizar_listas), actualizar_listas())) #Pasamos el argumento actualizar_listas(explicación en línea 143)
 clean_button.grid(row=2, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.S + tk.W)
 
-#Menu y boton para desplegar informacion de un punto(las funciones asociadas en interface_functions.py)
+#Menu y botón para desplegar información de un punto(las funciones asociadas en interface_functions.py)
 plot_node_display = tk.LabelFrame(root, text='Información de un punto')
 plot_node_display.grid(row=1, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.W + tk.S)
 plot_node_display.columnconfigure(0, weight=1)
@@ -106,7 +106,7 @@ segment_creator_display.rowconfigure(0, weight=1)
 segment_creator_display.rowconfigure(1, weight=1)
 segment_creator_display.rowconfigure(2, weight=1)
 
-sa_nodo_origen = tk.StringVar(value='incio')
+sa_nodo_origen = tk.StringVar(value='inicio')
 sa_nodo_destino = tk.StringVar(value='destino')
 
 nodes_origin_menu = tk.OptionMenu(segment_creator_display, sa_nodo_origen, *[node.name for node in g.nodes])
@@ -115,7 +115,7 @@ nodes_origin_menu.grid(row=0, column=0, padx=5, pady=5,sticky='ew')
 nodes_dest_menu = tk.OptionMenu(segment_creator_display, sa_nodo_destino, *[node.name for node in g.nodes])
 nodes_dest_menu.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
 
-create_button = tk.Button(segment_creator_display, text='Crear', command=lambda: (segment_creator(sa_nodo_origen.get(), sa_nodo_destino.get(), plot_display, actualizar_listas), actualizar_listas()))
+create_button = tk.Button(segment_creator_display, text='Crear', command=lambda: (segment_creator(sa_nodo_origen.get(), sa_nodo_destino.get(), plot_display, actualizar_listas), actualizar_listas())) #Pasamos el argumento actualizar_listas(explicación en línea 143)
 create_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky='ew')
 
 #Conjunto para botones de borrar puntos y segmentos
@@ -137,8 +137,9 @@ nodes_options_menu.grid(row=0, column=0, padx=5, pady=5, sticky='ew')
 segments_option_menu = tk.OptionMenu(nodes_segments_deleter_display, sa_segmento_borrar, *[nodes.name for nodes in g.segments])
 segments_option_menu.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
 
-delete_button = tk.Button(nodes_segments_deleter_display, text='Borrar', command=lambda: (borrar_punto_segmento(actualizar_listas, plot_display, sa_nodo_borrar.get(), sa_segmento_borrar.get()), actualizar_listas()))
+delete_button = tk.Button(nodes_segments_deleter_display, text='Borrar', command=lambda: (borrar_punto_segmento(actualizar_listas, plot_display, sa_nodo_borrar.get(), sa_segmento_borrar.get()), actualizar_listas())) #Pasamos el argumento actualizar_listas(explicación en línea 143)
 delete_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky='ew')
-show_initial_plot(plot_display, actualizar_listas)
 
-root.mainloop()
+show_initial_plot(plot_display, actualizar_listas) #Esto nos permitirá mostrar nuestro plot inicialmente en la interfaz, tenemos que pasarle actualizar_listas porque esa función la requerimos para el evento de clic que nos crea puntos, lo que hará que al crear se actualicen las listas
+
+root.mainloop() #Encendemos la aplicación

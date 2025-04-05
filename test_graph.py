@@ -3,8 +3,8 @@ from node import  *
 
 g = Graph()
 g.add_node(Node("A", 1, 20))
-g.add_node(Node("A", 2, 5))
-g.add_node(Node("tata", 1, 20))
+g.add_node(Node("A", 2, 5)) #prueba para ver que no se puden registrar nodos con el mismo nombre
+g.add_node(Node("tata", 1, 20)) #Prueba para ver que no se pueden registrar nodos que estan en la misma posicion
 g.add_node(Node("B", 8, 17))
 g.add_node(Node("C", 15, 20))
 g.add_node(Node("D", 18, 15))
@@ -18,8 +18,8 @@ g.add_node(Node("K", 3, 15))
 g.add_node(Node("L", 4, 10))
 g.add_segment("FL", "F", "L")
 g.add_segment("AB", "A", "B")
-g.add_segment("AB", "A", "B")
-g.add_segment("Patatas", "A", "B")
+g.add_segment("AB", "A", "B") #prueba para ver que no se pueden registrar segmentos con el mismo nombre
+g.add_segment("Patatas", "A", "B") #ni segmentos con el mismo origen y destino
 g.add_segment("AE", "A", "E")
 g.add_segment("AK", "A", "K")
 g.add_segment("BA", "B", "A")
