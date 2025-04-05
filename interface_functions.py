@@ -16,7 +16,7 @@ def load_flight_plan_display(plot_display, actualizar_listas): #función para re
     cargar_button.pack(pady=5)
 
 def load_flight(name, plot_display, popup, actualizar_listas): #función para cargar nuestro archivo
-    fig, ax = g.load_flight_plan(name.get(), popup) #función en graph.py que nos devuelve nuestro plot o, por el contrario, devuelve error si no existe el archivo que cargamos
+    fig, ax = g.load_flight_plan(name.get()) #función en graph.py que nos devuelve nuestro plot o, por el contrario, devuelve error si no existe el archivo que cargamos
     if fig == 'error': #Mensaje de error si no existe el archivo
         messagebox.showerror("Error", "No existe ningún archivo con ese nombre")
         popup.destroy()
