@@ -116,7 +116,7 @@ def show_plot_node(sa_nodo, plot_display): #Con esta función mostraremos la inf
 def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_name): #Función que nos permite borrar tanto puntos como segmentos del plot
     found_nodo = False
     print('si')
-    if nodo_name != 'puntos': #comprobamos que no tenga el valor inicial del menú, ya que este no es un punto y, por lo tanto, no se puede borrar
+    if nodo_name != 'punto': #comprobamos que no tenga el valor inicial del menú, ya que este no es un punto y, por lo tanto, no se puede borrar
         for i in range(len(g.segments) -1, -1, -1):
             origin_node = g.segments[i].or_node
             dest_node = g.segments[i].dest_node
