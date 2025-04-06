@@ -79,8 +79,7 @@ class Graph:
             x_dest,y_dest  = segment.dest_node.x, segment.dest_node.y
             vx,vy  = [x_org, x_dest], [y_org, y_dest]
             x_mid,y_mid  = (x_org + x_dest) / 2, (y_org + y_dest) / 2
-
-            plt.plot(vx,vy,color='blue', marker='>', markersize=5) #con el marker le hacemos las flechas de dirección
+            ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org), arrowprops=dict(arrowstyle='->', color='blue', lw=2))#con el marker le hacemos las flechas de dirección
             ax.text(x_mid, y_mid, round(segment.cost, 2), color='black', fontsize=10, ha='center', va='center') #Añadimos la distancia entre segmentos
         if test: #si test es True
             plt.show()
@@ -121,8 +120,7 @@ class Graph:
                     x_dest, y_dest = segment.dest_node.x, segment.dest_node.y
                     vx, vy = [x_org, x_dest], [y_org, y_dest]
                     x_mid, y_mid = (x_org + x_dest) / 2, (y_org + y_dest) / 2
-
-                    ax.plot(vx, vy, color='red') #hacemos los segmentos que los unen
+                    ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org), arrowprops=dict(arrowstyle='->', color='red', lw=2)) #hacemos los segmentos que los unen
                     ax.text(x_mid, y_mid, round(segment.cost, 2), color='black', fontsize=10, ha='center', va='center')
             for node in list_nodes: #finalmente los nodos restantes en la lista son los que no son ni el principal ni los vecinos por tanto los ponemos en gris
                 ax.scatter(node.x, node.y, color='gray')
