@@ -8,35 +8,49 @@ def actualizar_listas(): #función que utilizaremos para poder actualizar las li
     nombres_nodos = [node.name for node in g.nodes]
     nombres_segmentos = [segment.name for segment in g.segments]
     # === Lista: sa_nodo ===
-    sa_nodo.set('punto')  # valor fijo que no está en la lista
+    sa_nodo.set('Punto')  # valor fijo que no está en la lista
     menu = nodes_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_nodos:
         menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo.set(value))
 
+    # === Lista: sa_nodo_path_origen_name ===
+    sa_nodo_path_origen_name.set('Inicio')  # valor fijo que no está en la lista
+    menu = nodes_origin_path_menu['menu']
+    menu.delete(0, 'end')
+    for nombre in nombres_nodos:
+        menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_path_origen_name.set(value))
+
+    # === Lista: sa_nodo_path_destino_name ===
+    sa_nodo_path_destino_name.set('Destino')  # valor fijo que no está en la lista
+    menu = nodes_dest_path_menu['menu']
+    menu.delete(0, 'end')
+    for nombre in nombres_nodos:
+        menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_path_destino_name.set(value))
+
     # === Lista: sa_nodo_origen ===
-    sa_nodo_origen.set('inicio')  # valor fijo que no está en la lista
+    sa_nodo_origen.set('Inicio')  # valor fijo que no está en la lista
     menu = nodes_origin_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_nodos:
         menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_origen.set(value))
 
     # === Lista: sa_nodo_destino ===
-    sa_nodo_destino.set('destino')  # valor fijo que no está en la lista
+    sa_nodo_destino.set('Destino')  # valor fijo que no está en la lista
     menu = nodes_dest_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_nodos:
         menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_destino.set(value))
 
     # === Lista: sa_nodo_borrar ===
-    sa_nodo_borrar.set('punto')  # valor fijo que no está en la lista
+    sa_nodo_borrar.set('Punto')  # valor fijo que no está en la lista
     menu = nodes_options_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_nodos:
         menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_borrar.set(value))
 
     # === Lista: sa_segmento_borrar ===
-    sa_segmento_borrar.set('segmentos')  # valor fijo que no está en la lista
+    sa_segmento_borrar.set('Segmentos')  # valor fijo que no está en la lista
     menu = segments_option_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_segmentos:
@@ -86,16 +100,28 @@ plot_node_display.columnconfigure(0, weight=1)
 plot_node_display.columnconfigure(1, weight=1)
 plot_node_display.rowconfigure(0, weight=1)
 plot_node_display.rowconfigure(1, weight=1)
+plot_node_display.rowconfigure(2, weight=1)
 
-sa_nodo = tk.StringVar(value='punto')
+
+sa_nodo = tk.StringVar(value='Punto')
 nodes_menu = tk.OptionMenu(plot_node_display, sa_nodo, *[node.name for node in g.nodes])
 nodes_menu.grid(row=0, column=0, columnspan=2, padx=5, pady=5,sticky='ew')
 
-mostrar_button = tk.Button(plot_node_display, text='Mostrar', command=lambda: show_plot_node(sa_nodo.get(), plot_display))
-mostrar_button.grid(row=1, column=0, padx=5, pady=5, sticky='ew')
+sa_nodo_path_origen_name = tk.StringVar(value='Inicio')
+sa_nodo_path_destino_name = tk.StringVar(value='Destino')
+
+nodes_origin_path_menu = tk.OptionMenu(plot_node_display, sa_nodo_path_origen_name, *[node.name for node in g.nodes])
+nodes_origin_path_menu.grid(row=1, column=0, padx=5, pady=5,sticky='ew')
+
+nodes_dest_path_menu = tk.OptionMenu(plot_node_display, sa_nodo_path_destino_name, *[node.name for node in g.nodes])
+nodes_dest_path_menu.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+
+mostrar_button = tk.Button(plot_node_display, text='Mostrar', command=lambda:
+    (show_plot_node(sa_nodo.get(), plot_display),show_shortest_path(sa_nodo_path_origen_name.get(), sa_nodo_path_destino_name.get(), plot_display), actualizar_listas()))
+mostrar_button.grid(row=2, column=0, padx=5, pady=5, sticky='ew')
 
 back_button = tk.Button(plot_node_display, text='Volver al plot', command=lambda: show_initial_plot(plot_display))
-back_button.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+back_button.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
 
 #Botones y menu desplegable para crear segmentos(las funciones asociadas en interface_functions.py)
 segment_creator_display = tk.LabelFrame(root, text='Crear segmentos')
@@ -106,8 +132,8 @@ segment_creator_display.rowconfigure(0, weight=1)
 segment_creator_display.rowconfigure(1, weight=1)
 segment_creator_display.rowconfigure(2, weight=1)
 
-sa_nodo_origen = tk.StringVar(value='inicio')
-sa_nodo_destino = tk.StringVar(value='destino')
+sa_nodo_origen = tk.StringVar(value='Inicio')
+sa_nodo_destino = tk.StringVar(value='Destino')
 
 nodes_origin_menu = tk.OptionMenu(segment_creator_display, sa_nodo_origen, *[node.name for node in g.nodes])
 nodes_origin_menu.grid(row=0, column=0, padx=5, pady=5,sticky='ew')
@@ -128,8 +154,8 @@ nodes_segments_deleter_display.rowconfigure(1, weight=1)
 nodes_segments_deleter_display.rowconfigure(2, weight=1)
 
 #Botones y menu desplegable para borrar nodos y segmentos(las funciones asociadas en interface_functions.py)
-sa_nodo_borrar = tk.StringVar(value='puntos')
-sa_segmento_borrar = tk.StringVar(value='segmentos')
+sa_nodo_borrar = tk.StringVar(value='Puntos')
+sa_segmento_borrar = tk.StringVar(value='Segmentos')
 
 nodes_options_menu = tk.OptionMenu(nodes_segments_deleter_display, sa_nodo_borrar, *[node.name for node in g.nodes])
 nodes_options_menu.grid(row=0, column=0, padx=5, pady=5, sticky='ew')

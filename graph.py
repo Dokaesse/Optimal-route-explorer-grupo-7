@@ -1,10 +1,13 @@
 from segment import *
+from node import distance
+from path import *
 import matplotlib.pyplot as plt
 #Todas las funciónes que creamos no serán funciones, sino métodos de la clase Graph
 class Graph:
     def __init__(self): #Inicializamos la clase
         self.nodes = []
         self.segments = []
+        self.paths = []
 
     def add_node(self, n): #Añadimos nodos a nuestra lista de nodos
         i=0
@@ -15,7 +18,7 @@ class Graph:
             i+=1
         if not fin:
             self.nodes.append(n)
-            print(n.name)
+            #print(n.name)
             return True
         else: return False
 
@@ -130,7 +133,6 @@ class Graph:
             else:
                 return fig, ax #nos devuelve lo necesario para mostrarlo en la interfaz
         else:
-            print('No he encontrado ese punto!!!')
             return False
 
     def save_flight_plan(self, file_name): #Función para guardar nuestro plan de vuelo en un archivo
@@ -168,3 +170,64 @@ class Graph:
             return fig, ax
         except: #En caso de error devolveremos 'error' y 'error', normalmente el error está en que no existe el archivo que queremos leer
             return 'error', 'error'
+
+    def find_shortest_path(self, origin, destination):
+        origin_node, destination_node, fin, previous_node = '', '', False, None
+
+        for node in self.nodes:
+            if node.name == origin:
+                origin_node = node
+            elif node.name == destination:
+                destination_node = node
+            if origin_node and destination_node:
+                fin = True
+                break
+        if not fin:
+            print("Origen o destino no encontrado.")
+            return
+
+        final_path = False
+        last_node = origin_node
+        path_follower = []
+
+        while not final_path:
+            for neight in last_node.nodes:
+                if neight != previous_node:
+                    if not path_follower:
+                        current_path = [origin_node, neight]
+                    else:
+                        current_path = path_follower.copy()
+                        current_path.append(neight)
+                    distancia = 0
+                    for i in range(len(current_path) - 1):
+                        distancia += distance(current_path[i], current_path[i + 1])
+                    p = Path(last_node, neight, distancia, current_path)
+                    self.paths.append(p)
+
+            if not self.paths:
+                print("No hay camino disponible hacia el destino.")
+                return 'error', 'error'
+
+            # Ordenamos los caminos por la distancia estimada total al destino
+            self.paths.sort(key=lambda path: path.distance + distance(path.destino, destination_node))
+
+            # Seleccionamos el mejor camino (ya es el primero)
+            last_path = self.paths[0]
+            last_node = last_path.destino
+
+            for path in self.paths:
+                camino_array = [node.name for node in path.camino]
+                print(camino_array, path.distance, path.distance + distance(path.destino, destination_node))
+            print('-------------------------')
+
+            if last_node.name == destination_node.name:
+                final_path = True
+            else:
+                self.paths.pop(0)  # Quitamos el primero porque ya lo usamos
+                previous_node = last_path.inicio
+                path_follower = last_path.camino
+
+        print("Camino encontrado:")
+        fig, ax = last_path.path_plot(self)
+        self.paths.clear()  #Borramos todos los elementos de paths para la busqueda del siguente camino
+        return fig, ax

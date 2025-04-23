@@ -106,17 +106,28 @@ def show_plot_node(sa_nodo, plot_display): #Con esta función mostraremos la inf
         fig, ax = g.plot_node(sa_nodo) #esta función nos devuelve los valores de fig y ax necesarios para crear nuestro plot
         canvas = FigureCanvasTkAgg(fig, master=plot_display)
         canvas.draw()
-        print('si')
         canvas_picture = canvas.get_tk_widget()
         canvas_picture.config(width=600, height=700)
         canvas_picture.grid(row=0, column=0, padx=5, pady=5, sticky= tk.N + tk.E + tk.S +tk.W) #dibujamos la figura y hacemos el canvas para poder verlo en la interfaz
-    else:
-        print('Ha habido un error') ## hacerlo como error que salga ventana
+    elif sa_nodo != 'Punto':
+        messagebox.showerror('ERROR🛑', 'No se ha podido mostrar información del punto!!')
+
+def show_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu, plot_display):
+    if nodes_origin_path_menu != 'Origen' and nodes_dest_path_menu != 'Destino':
+        fig, ax = g.find_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu)
+        if fig == 'error':
+            messagebox.showerror('ERROR🛑', f'No hay manera de llegar a {nodes_dest_path_menu} desde {nodes_origin_path_menu}')
+        else:
+            canvas = FigureCanvasTkAgg(fig, master=plot_display)
+            canvas.draw()
+            canvas_picture = canvas.get_tk_widget()
+            canvas_picture.config(width=600, height=700)
+            canvas_picture.grid(row=0, column=0, padx=5, pady=5,
+                                sticky=tk.N + tk.E + tk.S + tk.W)  # dibujamos la figura y hacemos el canvas para poder verlo en la interfaz
 
 def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_name): #Función que nos permite borrar tanto puntos como segmentos del plot
     found_nodo = False
-    print('si')
-    if nodo_name != 'punto': #comprobamos que no tenga el valor inicial del menú, ya que este no es un punto y, por lo tanto, no se puede borrar
+    if nodo_name != 'Punto': #comprobamos que no tenga el valor inicial del menú, ya que este no es un punto y, por lo tanto, no se puede borrar
         for i in range(len(g.segments) -1, -1, -1):
             origin_node = g.segments[i].or_node
             dest_node = g.segments[i].dest_node
@@ -134,7 +145,7 @@ def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_na
                 found_nodo = True
                 break
     found_segment = False
-    if segment_name != 'segmentos': #commprobamos al igual que con el punto que este no sea el valor inicial del menú, qeu nno existe en nuestra lista de segmentos
+    if segment_name != 'Segmentos': #commprobamos al igual que con el punto que este no sea el valor inicial del menú, qeu nno existe en nuestra lista de segmentos
         for segment in g.segments:
             if segment.name == segment_name: #buscamos el segmento que tenga el mismo nombre y lo borramos de la lista
                 origin_node = segment.or_node
