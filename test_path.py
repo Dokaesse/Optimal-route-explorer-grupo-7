@@ -11,4 +11,4 @@ if p.contains_node('D'):
     print('Está')
 else: print('no está')
 
-p.path_plot(g)
+p.path_plot(g, True)
