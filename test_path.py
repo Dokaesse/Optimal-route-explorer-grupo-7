@@ -1,6 +1,6 @@
 from path import *
 from test_graph import *
-p = Path()
+p = Path('A', 'D', )
 #No funciona
 p.add_node_path('A',g)
 p.add_node_path('B',g)

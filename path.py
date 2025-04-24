@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 class Path:
-    def __init__(self, inicio, destino, distancia, camino):
+    def __init__(self, inicio, destino, distancia=None, camino=None):
         self.inicio = inicio
         self.destino = destino
         self.distance = distancia

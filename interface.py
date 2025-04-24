@@ -120,7 +120,7 @@ mostrar_button = tk.Button(plot_node_display, text='Mostrar', command=lambda:
     (show_plot_node(sa_nodo.get(), plot_display),show_shortest_path(sa_nodo_path_origen_name.get(), sa_nodo_path_destino_name.get(), plot_display), actualizar_listas()))
 mostrar_button.grid(row=2, column=0, padx=5, pady=5, sticky='ew')
 
-back_button = tk.Button(plot_node_display, text='Volver al plot', command=lambda: show_initial_plot(plot_display))
+back_button = tk.Button(plot_node_display, text='Volver al plot', command=lambda: show_initial_plot(plot_display, actualizar_listas))
 back_button.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
 
 #Botones y menu desplegable para crear segmentos(las funciones asociadas en interface_functions.py)

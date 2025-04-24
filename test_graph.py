@@ -52,7 +52,6 @@ g.add_segment("LF", "L", "F")
 #g.plot(True)
 #g.plot_node('C', True)
 #g.find_shortest_path('F', 'E')
-
 #g.save_flight_plan('prueba.txt')
 #g.load_flight_plan('prueba.txt')
 print("Probando el grafo...")
