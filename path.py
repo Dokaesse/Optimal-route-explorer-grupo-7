@@ -33,6 +33,50 @@ class Path:
                 break
         return fin
 
+    def path_plot(self, g, origen, destination):
+        fig, ax = plt.subplots(figsize=(12, 8))  # Ventana más grande
+        ax.set_title(f'Distancia {round(self.distance, 2)}km entre {origen} a {destination}')
+
+        list_nodes = []
+        print(self.camino)
+        fin = True
+        for node in g.nodes:
+            list_nodes.append(node)
+            for path_node in self.camino:
+                if node.ident == path_node.ident:
+                    ax.scatter(node.lon, node.lat, color='blue')
+                    ax.text(node.lon + 0.03, node.lat + 0.03, node.name, color='black', size=7)
+                    list_nodes.remove(node)
+        i, fin = 0, False
+        '''
+        while i<len(self.camino)-1 and not fin:
+            fin = True
+            for node in self.camino[i].nodes:
+                print(node.name, self.camino[i+1].name, self.camino[i].name)
+                if node.name == self.camino[i+1].name:
+                    fin = False
+                    break
+            i+=1
+        i=0
+        '''
+        while i < len(self.camino) - 1 and not fin:
+            for segment in g.segments:
+                if segment.origin.name == self.camino[i].name and segment.dest.name == self.camino[i + 1].name:
+                    x_org, y_org = segment.origin.lon, segment.origin.lat
+                    x_dest, y_dest = segment.dest.lon, segment.dest.lat
+                    vx, vy = [x_org, x_dest], [y_org, y_dest]
+                    x_mid, y_mid = (x_org + x_dest) / 2, (y_org + y_dest) / 2
+                    ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org),
+                                arrowprops=dict(arrowstyle='->', color='red',
+                                                lw=2))  # hacemos los segmentos que los unen
+                    ax.text(x_mid, y_mid, round(segment.distance, 2), color='black', fontsize=7, ha='center', va='center')
+            i += 1
+        for node in list_nodes:
+            ax.scatter(node.lon, node.lat, color='grey')
+            ax.text(node.lon + 0.03, node.lat + 0.03, node.name, color='black', size=7)
+
+        return fig, ax
+'''        
     def path_plot(self,g, test=False):
         fig, ax = plt.subplots()
         list_nodes = []
@@ -77,7 +121,7 @@ class Path:
                 list_nodes.remove(path_node)
             i, fin = 0, False
 
-            '''
+            ###
             while i<len(self.camino)-1 and not fin:
                 fin = True
                 for node in self.camino[i].nodes:
@@ -87,7 +131,8 @@ class Path:
                         break
                 i+=1
             i=0
-            '''
+            ###
+            
             while i<len(self.camino)-1 and not fin:
                 for segment in g.segments:
                     if segment.or_node.name == self.camino[i].name and segment.dest_node.name == self.camino[i+1].name:
@@ -105,4 +150,4 @@ class Path:
                 ax.text(node.x + 0.3, node.y + 0.3, node.name, color='black', size=12)
             #plt.show()
             return fig, ax
-
+'''
