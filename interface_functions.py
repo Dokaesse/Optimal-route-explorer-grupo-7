@@ -9,19 +9,31 @@ from matplotlib.backend_bases import MouseEvent
 def load_flight_plan_display(plot_display, actualizar_listas): #función para recoger datos sobre el archivo que queremos cargar
     popup = tk.Toplevel()
     popup.title('Cargar fichero')
-    label = tk.Label(popup, text='Introduce el nombre del fichero donde está tu plot guardado: ')
+    label = tk.Label(popup, text='Introduce el nombre del fichero donde está tu plot guardado o selecciona los predeterminados: ')
     label.pack(pady=5, padx=5)
     name = tk.Entry(popup)
     name.pack(pady=5, padx=5)
-    cargar_button = tk.Button(popup, text='cargar', command=lambda: load_flight(name, plot_display, popup, actualizar_listas))
-    spain = tk.Button(popup, text='España', command=lambda: load_flight('spain', plot_display, popup, actualizar_listas))
-    eu = tk.Button(popup, text='Europa', command=lambda: load_flight('europe', plot_display, popup, actualizar_listas))
-    cat = tk.Button(popup, text='Catalunya', command=lambda: load_flight('catalunya', plot_display, popup, actualizar_listas))
 
+    # Frame para agrupar los botones de regiones
+    button_frame = tk.Frame(popup)
+    button_frame.pack(pady=5)
+
+    spain = tk.Button(button_frame, text='España',
+                      command=lambda: load_flight('spain', plot_display, popup, actualizar_listas))
+    eu = tk.Button(button_frame, text='Europa',
+                   command=lambda: load_flight('europe', plot_display, popup, actualizar_listas))
+    cat = tk.Button(button_frame, text='Catalunya',
+                    command=lambda: load_flight('catalunya', plot_display, popup, actualizar_listas))
+
+    # Usamos side=LEFT para colocarlos horizontalmente
+    spain.pack(side=tk.LEFT, padx=5)
+    eu.pack(side=tk.LEFT, padx=5)
+    cat.pack(side=tk.LEFT, padx=5)
+
+    # Botón de cargar debajo del frame
+    cargar_button = tk.Button(popup, text='cargar',
+                              command=lambda: load_flight(name, plot_display, popup, actualizar_listas))
     cargar_button.pack(pady=5)
-    spain.pack(pady=5)
-    eu.pack(pady=5)
-    cat.pack(pady=5)
 
 def load_flight(name, plot_display, popup, actualizar_listas): #función para cargar nuestro archivo
     if name == 'spain' or name == 'catalunya' or name == 'europe':
