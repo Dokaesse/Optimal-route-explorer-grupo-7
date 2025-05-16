@@ -69,13 +69,13 @@ class Graph:
 
     def plot(self, test=False): #Metodo para crear nuestros plots(el argumento test está por default en False)
         fig, ax = plt.subplots(figsize=(16, 8))  # Ventana más grande
-        ax.set_title('Gráfico con nodos lat segmentos')
+        ax.set_title('Gráfico con nodos y segmentos')
 
         for k in self.nodes:  # Nodos
             ax.scatter(k.lon, k.lat, color='red')  # lon en X, lat en Y
             ax.text(k.lon + 0.05, k.lat + 0.05, k.name, color='green', size=7)
 
-        for segment in self.segments:  # Segmentos con flechas lat distancias
+        for segment in self.segments:  # Segmentos con flechas y distancias
             x_org, y_org = segment.origin.lon, segment.origin.lat
             x_dest, y_dest = segment.dest.lon, segment.dest.lat
             ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org),
@@ -192,6 +192,7 @@ class Graph:
         if not fin:
             print("Origen o destino no encontrado.dddd")
             return
+        print(origin_node.name, destination_node.name)
         # Inicializamos variables para la búsqueda del camino
         final_path = False  # Flag para indicar si encontramos el camino
         last_node = origin_node  # Empezamos desde el nodo de origen
@@ -229,11 +230,12 @@ class Graph:
             last_node = last_path.destino  # Avanzamos al siguiente nodo
 
             # (Opcional) Mostramos en consola los caminos posibles para depuración
+            '''
             for path in self.paths:
                 camino_array = [node.name for node in path.camino]
                 print(camino_array, path.distance, path.distance + distance(path.destino, destination_node))
             print('-------------------------')
-
+            '''
             # Si llegamos al nodo destino, terminamos
             if last_node.name == destination_node.name:
                 final_path = True
