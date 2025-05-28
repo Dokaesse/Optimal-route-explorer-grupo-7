@@ -92,7 +92,7 @@ def crear_punto(nombre, x, y, plot_display, popup, actualizar_listas=None): #Fun
         s.add_point(Node(nombre, x, y))
         popup.destroy()
         actualizar_listas()
-        show_initial_plot(plot_display, actualizar_listas, True)
+        show_initial_plot(plot_display, actualizar_listas)
     else: #En caso de existir nos muestra un mensaje de error
         messagebox.showerror("Error", "El nombre del punto ya existe. Intente con otro nombre.")
         popup.destroy()
@@ -267,7 +267,6 @@ def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_na
         show_initial_plot(plot_display, actualizar_listas)
 
 def display_google_earth_interface():
-    print('dentro')
     space.register_kml_file()
 
 def display_shortest_path_google_earth_interface(origen, destino):

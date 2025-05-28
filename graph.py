@@ -309,7 +309,7 @@ class Graph:
         for node in self.nodes:
             f.write(f'<Placemark><name>{node.name}</name><Point><coordinates>{node.lon},{node.lat}</coordinates></Point></Placemark>')
         for segment in self.segments:
-            f.write(f'<Placemark><name>{segment.name}</name><LineString><extrude>1</extrude><tesellate>1</tesellate><altitudeMode>absolute</altitudeMode><coordinates>{segment.origin.lon},{segment.origin.lat},4000\n{segment.dest.lon},{segment.dest.lat},2000</coordinates></LineString></Placemark>')
+            f.write(f'<Placemark><name>{segment.name}</name><LineString><extrude>1</extrude><tesellate>1</tesellate><altitudeMode>absolute</altitudeMode><coordinates>{segment.origin.lon},{segment.origin.lat},4000\n{segment.dest.lon},{segment.dest.lat},4000</coordinates></LineString></Placemark>')
         f.write('</Document></kml>')
         f.close()
 
