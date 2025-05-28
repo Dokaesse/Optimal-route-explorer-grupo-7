@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 #from test_graph import *
 from load_data_file import *
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+
 from matplotlib.backend_bases import MouseEvent
 #archivo para las funciones de la interfaz
 
@@ -45,11 +46,25 @@ def load_flight(name, plot_display, popup, actualizar_listas): #función para ca
         messagebox.showerror("Error", "No existe ningún archivo con ese nombre")
         popup.destroy()
     else:
+        if hasattr(plot_display, 'canvas_picture'):
+            plot_display.canvas_picture.destroy()
+        if hasattr(plot_display, 'toolbar_frame'):
+            plot_display.toolbar_frame.destroy()
+
         canvas = FigureCanvasTkAgg(fig, master=plot_display)
         canvas.draw()
         canvas_picture = canvas.get_tk_widget()
         canvas_picture.config(width=1400, height=700)
-        canvas_picture.grid(row=0, column=0, padx=5, pady=5, sticky= tk.N + tk.E + tk.S +tk.W)
+        canvas_picture.grid(row=0, rowspan=3, column=0, padx=5, pady=5, sticky= tk.N + tk.E + tk.S +tk.W)
+        plot_display.canvas_picture = canvas_picture
+
+        toolbar_frame = tk.Frame(plot_display)
+        toolbar_frame.grid(row=4, column=0, pady=5, sticky='n')
+        toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)
+        toolbar.update()
+        plot_display.toolbar_frame = toolbar_frame
+
+
         fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, plot_display, actualizar_listas))
         actualizar_listas()
         popup.destroy()
@@ -77,7 +92,7 @@ def crear_punto(nombre, x, y, plot_display, popup, actualizar_listas=None): #Fun
         s.add_point(Node(nombre, x, y))
         popup.destroy()
         actualizar_listas()
-        show_initial_plot(plot_display, actualizar_listas)
+        show_initial_plot(plot_display, actualizar_listas, True)
     else: #En caso de existir nos muestra un mensaje de error
         messagebox.showerror("Error", "El nombre del punto ya existe. Intente con otro nombre.")
         popup.destroy()
@@ -105,15 +120,29 @@ def on_click(event: MouseEvent, plot_display, actualizar_listas=None): #Función
 def show_initial_plot(plot_display, actualizar_listas=None, clear=None): #Función para mostrar inicialmente el plot en la interfaz, pero también la llamaremos en otras funciones para mostrar el gráfico actualizado
     fig, ax = space.plot()
     if clear:
+        print('hazme caso')
         ax.set_xlim(0, 20)
         ax.set_ylim(0, 25)
+
+    if hasattr(plot_display, 'canvas_picture'):
+        plot_display.canvas_picture.destroy()
+    if hasattr(plot_display, 'toolbar_frame'):
+        plot_display.toolbar_frame.destroy()
+
     canvas = FigureCanvasTkAgg(fig, master=plot_display)
     canvas.draw()
-
     canvas_picture = canvas.get_tk_widget()
     canvas_picture.config(width=1400, height=700)
-    canvas_picture.grid(row=0, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.S + tk.W)
+    canvas_picture.grid(row=0,rowspan=3, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.S + tk.W)
+    plot_display.canvas_picture = canvas_picture
 
+    toolbar_frame = tk.Frame(plot_display)
+    toolbar_frame.grid(row=4, column=0, pady=5, sticky='n')
+    toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)
+    toolbar.update()
+    plot_display.toolbar_frame = toolbar_frame
+
+    space.paths.clear()
     # Conectamos el clic con la función y le pasamos actualizar_listas
     fig.canvas.mpl_connect('button_press_event', lambda event: on_click(event, plot_display, actualizar_listas))
 
@@ -129,15 +158,51 @@ def segment_creator(origin_name, destination_name, plot_display, actualizar_list
             print(segment.name)
         show_initial_plot(plot_display, actualizar_listas) #actualizamos el plot de la interfaz
 
-def show_plot_node(sa_nodo, plot_display): #Con esta función mostraremos la información del punto que seleccionemos
+def show_plot_node_or_reachability(sa_nodo, plot_display): #Con esta función mostraremos la información del punto que seleccionemos
     print(sa_nodo)
     if space.plot_node(sa_nodo):
-        fig, ax = space.plot_node(sa_nodo) #esta función nos devuelve los valores de fig y ax necesarios para crear nuestro plot
-        canvas = FigureCanvasTkAgg(fig, master=plot_display)
-        canvas.draw()
-        canvas_picture = canvas.get_tk_widget()
-        canvas_picture.config(width=1400, height=700)
-        canvas_picture.grid(row=0, column=0, padx=5, pady=5, sticky= tk.N + tk.E + tk.S +tk.W) #dibujamos la figura y hacemos el canvas para poder verlo en la interfaz
+        popup = tk.Toplevel()
+        popup.title('Selecciona operación:')
+        label = tk.Label(popup,
+                         text='Quieres mostrar los vecinos del punto o su reachability: ')
+        label.pack(pady=5, padx=5)
+        button_frame = tk.Frame(popup)
+        button_frame.pack(pady=5)
+        vecinos = tk.Button(button_frame, text='Vecinos',
+                          command=lambda: reach_or_vecinos_plot('vecinos',sa_nodo, popup))
+        reachability = tk.Button(button_frame, text='reachability',
+                       command=lambda: reach_or_vecinos_plot('reach', sa_nodo, popup))
+
+        # Usamos side=LEFT para colocarlos horizontalmente
+        vecinos.pack(side=tk.LEFT, padx=5)
+        reachability.pack(side=tk.LEFT, padx=5)
+
+        def reach_or_vecinos_plot(decision,nodo, popup):
+            if decision == 'vecinos':
+                fig, ax = space.plot_node(nodo)  # esta función nos devuelve los valores de fig y ax necesarios para crear nuestro plot
+            elif decision == 'reach':
+                fig, ax = space.show_reachability(nodo)  # esta función nos devuelve los valores de fig y ax necesarios para crear nuestro plot
+            if hasattr(plot_display, 'canvas_picture'):
+                plot_display.canvas_picture.destroy()
+            if hasattr(plot_display, 'toolbar_frame'):
+                plot_display.toolbar_frame.destroy()
+
+            canvas = FigureCanvasTkAgg(fig, master=plot_display)
+            canvas.draw()
+            canvas_picture = canvas.get_tk_widget()
+            canvas_picture.config(width=1400, height=700)
+            canvas_picture.grid(row=0,rowspan=3, column=0, padx=5, pady=5,
+                                sticky=tk.N + tk.E + tk.S + tk.W)  # dibujamos la figura y hacemos el canvas para poder verlo en la interfaz
+            plot_display.canvas_picture = canvas_picture
+
+            toolbar_frame = tk.Frame(plot_display)
+            toolbar_frame.grid(row=4, column=0, pady=5, sticky='n')
+            toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)
+            toolbar.update()
+            plot_display.toolbar_frame = toolbar_frame
+
+            popup.destroy()
+
     elif sa_nodo != 'Punto':
         messagebox.showerror('ERROR🛑', 'No se ha podido mostrar información del punto!!')
 
@@ -148,12 +213,25 @@ def show_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu, plot_displa
         if fig == 'error':
             messagebox.showerror('ERROR🛑', f'No hay manera de llegar a {nodes_dest_path_menu} desde {nodes_origin_path_menu}')
         else:
+            if hasattr(plot_display, 'canvas_picture'):
+                plot_display.canvas_picture.destroy()
+            if hasattr(plot_display, 'toolbar_frame'):
+                plot_display.toolbar_frame.destroy()
+
             canvas = FigureCanvasTkAgg(fig, master=plot_display)
             canvas.draw()
             canvas_picture = canvas.get_tk_widget()
             canvas_picture.config(width=1400, height=700)
-            canvas_picture.grid(row=0, column=0, padx=5, pady=5,
+            canvas_picture.grid(row=0,rowspan=3, column=0, padx=5, pady=5,
                                 sticky=tk.N + tk.E + tk.S + tk.W)  # dibujamos la figura y hacemos el canvas para poder verlo en la interfaz
+            plot_display.canvas_picture = canvas_picture
+
+            toolbar_frame = tk.Frame(plot_display)
+            toolbar_frame.grid(row=4, column=0, pady=5, sticky='n')
+            toolbar = NavigationToolbar2Tk(canvas, toolbar_frame)
+            toolbar.update()
+            plot_display.toolbar_frame = toolbar_frame
+
 
 def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_name): #Función que nos permite borrar tanto puntos como segmentos del plot
     found_nodo = False
@@ -187,3 +265,21 @@ def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_na
     if found_nodo or found_segment: #si se cumple alguna de las condiciones antes dichas entonces actualizaremos nuestro plot en la interfaz
         #print('juan')
         show_initial_plot(plot_display, actualizar_listas)
+
+def display_google_earth_interface():
+    print('dentro')
+    space.register_kml_file()
+
+def display_shortest_path_google_earth_interface(origen, destino):
+    if origen != 'Origen' and destino != 'Destino':
+        fig, ax = space.find_shortest_path(origen, destino)
+        if fig == 'error':
+            messagebox.showerror('ERROR🛑', f'No hay manera de llegar a {origen} desde {destino}')
+        else:
+            space.show_shortest_path_on_google_earth_animation()
+    elif not space.paths:
+        messagebox.showerror('ERROR🛑', f'Primero debes seleccionar un origen o un destino')
+    else:
+        space.show_shortest_path_on_google_earth_animation()
+
+

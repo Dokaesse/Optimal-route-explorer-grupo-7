@@ -6,7 +6,7 @@ class Node:
         self.lat = y
         self.vecinos = []
 
-    def add_neighbor(self, n_node): #Añadimos vecinos al nodo y filtramos si ya el vecino que queremos poner(Inservible ya que se hace la comprovación en graph.py)
+    def add_neight(self, n_node): #Añadimos vecinos al nodo y filtramos si ya el vecino que queremos poner(Inservible ya que se hace la comprovación en graph.py)
         self.vecinos.append(n_node)
         '''
         i=0

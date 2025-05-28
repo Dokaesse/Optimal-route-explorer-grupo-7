@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+            <kml xmlns="http://www.opengis.net/kml/2.2"
+                xmlns:gx="http://www.google.com/kml/ext/2.2">
+            <Document>
+                
+                <Style id="lineStyle">
+                    <LineStyle>
+                        <color>7f00ffff</color>
+                        <width>4</width>
+                    </LineStyle>
+                    <PolyStyle>
+                        <color>7f00ff00</color>
+                    </PolyStyle>
+                </Style>
+                <Style id="planeIcon">
+                    <IconStyle>
+                        <scale>1.2</scale>
+                        <Icon>
+                            <href>http://maps.google.com/mapfiles/kml/shapes/airports.png</href>
+                        </Icon>
+                    </IconStyle>
+                </Style>
+                
+                    <Placemark>
+                        <name>ALT.D</name>
+                        <Point>
+                            <coordinates>-0.5560695333,38.2823164</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>OSVAN</name>
+                        <Point>
+                            <coordinates>-0.5633333333,38.1166666667</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>ALT</name>
+                        <Point>
+                            <coordinates>-0.57,38.2683333333</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>RESTU</name>
+                        <Point>
+                            <coordinates>-1.5575,37.9075</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>TOSGA</name>
+                        <Point>
+                            <coordinates>-2.3072222222,37.6255555556</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>ROLAS</name>
+                        <Point>
+                            <coordinates>-2.8544444444,37.4155555556</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>ARPEX</name>
+                        <Point>
+                            <coordinates>-3.0241666667,37.5797222222</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>BAZAS</name>
+                        <Point>
+                            <coordinates>-3.1852777778,37.7344444444</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>AMOTA</name>
+                        <Point>
+                            <coordinates>-5.2516666667,37.6055555556</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>OLOPA</name>
+                        <Point>
+                            <coordinates>-5.4625,37.5338888833</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>SVL</name>
+                        <Point>
+                            <coordinates>-5.7622222222,37.4275</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>PIMUR</name>
+                        <Point>
+                            <coordinates>-6.5183333333,37.2913888889</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>ONUBA</name>
+                        <Point>
+                            <coordinates>-6.76,37.2466666667</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>NAPES</name>
+                        <Point>
+                            <coordinates>-7.0302777778,37.1961111111</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>NIRAK</name>
+                        <Point>
+                            <coordinates>-7.4286111111,37.2458333333</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>GOBIX</name>
+                        <Point>
+                            <coordinates>-7.8511111167,37.0013888833</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                    <Placemark>
+                        <name>FAR.A</name>
+                        <Point>
+                            <coordinates>-7.9624933667,37.01446185</coordinates>
+                        </Point>
+                    </Placemark>
+                    
+                        <Placemark>
+                            <name>ALT.D-OSVAN</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -0.5560695333,38.2823164,0
+                                    -0.5633333333,38.1166666667,2343
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>OSVAN-ALT</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -0.5633333333,38.1166666667,2343
+                                    -0.57,38.2683333333,4375
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>ALT-RESTU</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -0.57,38.2683333333,4375
+                                    -1.5575,37.9075,6093
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>RESTU-TOSGA</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -1.5575,37.9075,6093
+                                    -2.3072222222,37.6255555556,7500
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>TOSGA-ROLAS</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -2.3072222222,37.6255555556,7500
+                                    -2.8544444444,37.4155555556,8593
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>ROLAS-ARPEX</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -2.8544444444,37.4155555556,8593
+                                    -3.0241666667,37.5797222222,9375
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>ARPEX-BAZAS</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -3.0241666667,37.5797222222,9375
+                                    -3.1852777778,37.7344444444,9843
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>BAZAS-AMOTA</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -3.1852777778,37.7344444444,9843
+                                    -5.2516666667,37.6055555556,10000
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>AMOTA-OLOPA</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -5.2516666667,37.6055555556,10000
+                                    -5.4625,37.5338888833,9843
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>OLOPA-SVL</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -5.4625,37.5338888833,9843
+                                    -5.7622222222,37.4275,9375
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>SVL-PIMUR</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -5.7622222222,37.4275,9375
+                                    -6.5183333333,37.2913888889,8593
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>PIMUR-ONUBA</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -6.5183333333,37.2913888889,8593
+                                    -6.76,37.2466666667,7500
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>ONUBA-NAPES</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -6.76,37.2466666667,7500
+                                    -7.0302777778,37.1961111111,6093
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>NAPES-NIRAK</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -7.0302777778,37.1961111111,6093
+                                    -7.4286111111,37.2458333333,4375
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>NIRAK-GOBIX</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -7.4286111111,37.2458333333,4375
+                                    -7.8511111167,37.0013888833,2343
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                        <Placemark>
+                            <name>GOBIX-FAR.A</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    -7.8511111167,37.0013888833,2343
+                                    -7.9624933667,37.01446185,0
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        
+                <Placemark id="airplane">
+                    <name>Avión</name>
+                    <styleUrl>#planeIcon</styleUrl>
+                    <Point>
+                        <coordinates>-0.5560695333,38.2823164,0</coordinates>
+                    </Point>
+                </Placemark>
+                
+                <gx:Tour>
+                    <name>Vuelo animado</name>
+                    <gx:Playlist>
+                
+                <gx:FlyTo>
+                    <gx:duration>1.38</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-0.5633333333</longitude>
+                        <latitude>38.1166666667</latitude>
+                        <altitude>2343</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.27</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-0.57</longitude>
+                        <latitude>38.2683333333</latitude>
+                        <altitude>4375</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>7.15</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-1.5575</longitude>
+                        <latitude>37.9075</latitude>
+                        <altitude>6093</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>5.47</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-2.3072222222</longitude>
+                        <latitude>37.6255555556</latitude>
+                        <altitude>7500</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>4.02</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-2.8544444444</longitude>
+                        <latitude>37.4155555556</latitude>
+                        <altitude>8593</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.77</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-3.0241666667</longitude>
+                        <latitude>37.5797222222</latitude>
+                        <altitude>9375</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.67</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-3.1852777778</longitude>
+                        <latitude>37.7344444444</latitude>
+                        <altitude>9843</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>13.68</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-5.2516666667</longitude>
+                        <latitude>37.6055555556</latitude>
+                        <altitude>10000</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.52</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-5.4625</longitude>
+                        <latitude>37.5338888833</latitude>
+                        <altitude>9843</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>2.17</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-5.7622222222</longitude>
+                        <latitude>37.4275</latitude>
+                        <altitude>9375</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>5.14</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-6.5183333333</longitude>
+                        <latitude>37.2913888889</latitude>
+                        <altitude>8593</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.65</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-6.76</longitude>
+                        <latitude>37.2466666667</latitude>
+                        <altitude>7500</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>1.84</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-7.0302777778</longitude>
+                        <latitude>37.1961111111</latitude>
+                        <altitude>6093</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>2.68</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-7.4286111111</longitude>
+                        <latitude>37.2458333333</latitude>
+                        <altitude>4375</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>3.47</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-7.8511111167</longitude>
+                        <latitude>37.0013888833</latitude>
+                        <altitude>2343</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                <gx:FlyTo>
+                    <gx:duration>0.75</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>-7.9624933667</longitude>
+                        <latitude>37.01446185</latitude>
+                        <altitude>0</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        
+                    </gx:Playlist>
+                </gx:Tour>
+                </Document></kml>

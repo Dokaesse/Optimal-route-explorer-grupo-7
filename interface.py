@@ -1,4 +1,4 @@
-##Configuracion de la interfaz
+    ##Configuracion de la interfaz
 import tkinter as tk
 from interface_functions import *
 
@@ -7,6 +7,8 @@ def actualizar_listas(): #función que utilizaremos para poder actualizar las li
     # Obtener las nuevas listas de nombres
     nombres_nodos = [node.name for node in space.nodes]
     nombres_aeropuertos = [node.name for node in space.airports]
+    if not space.airports:
+        nombres_aeropuertos = [node.name for node in space.nodes]
     nombres_segmentos = [segment.name for segment in space.segments]
     # === Lista: sa_nodo ===
     sa_nodo.set('Punto')  # valor fijo que no está en la lista
@@ -44,7 +46,7 @@ def actualizar_listas(): #función que utilizaremos para poder actualizar las li
         menu.add_command(label=nombre, command=lambda value=nombre: sa_nodo_destino.set(value))
 
     # === Lista: sa_nodo_borrar ===
-    sa_nodo_borrar.set('Punto')  # valor fijo que no está en la lista
+    sa_nodo_borrar.set('Puntos')  # valor fijo que no está en la lista
     menu = nodes_options_menu['menu']
     menu.delete(0, 'end')
     for nombre in nombres_nodos:
@@ -60,7 +62,7 @@ def actualizar_listas(): #función que utilizaremos para poder actualizar las li
 #configuracion de la ventana
 root = tk.Tk()
 root.geometry('1920x1080')
-root.title('Version 1 finalizada')
+root.title('Version 4 finalizada')
 root.columnconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
@@ -71,7 +73,7 @@ root.rowconfigure(0, weight=1)
 
 left_panel = tk.Frame(root)
 left_panel.grid(row=0, column=0, rowspan=4, sticky='nsew', padx=5, pady=5)
-left_panel.rowconfigure([0, 1, 2, 3], weight=1)
+left_panel.rowconfigure([0, 1, 2, 3, 4], weight=1)
 left_panel.columnconfigure(0, weight=1)
 
 #Configuracion del display del plot
@@ -79,6 +81,10 @@ plot_display = tk.LabelFrame(root, text='Plot')
 plot_display.grid(row=0, column=1, rowspan=3, pady=5, padx=5, sticky='nsew')
 plot_display.columnconfigure(0, weight=1)
 plot_display.rowconfigure(0, weight=1)
+plot_display.rowconfigure(1, weight=1)
+plot_display.rowconfigure(2, weight=1)
+plot_display.rowconfigure(3, weight=1)
+plot_display.rowconfigure(4, weight=1)
 
 #Conjunto para botones de guardar/cargar/limpiar
 button_save_run_fileplot = tk.LabelFrame(left_panel, text='Cargar y guardar plot')
@@ -106,6 +112,7 @@ plot_node_display.columnconfigure(1, weight=1)
 plot_node_display.rowconfigure(0, weight=1)
 plot_node_display.rowconfigure(1, weight=1)
 plot_node_display.rowconfigure(2, weight=1)
+plot_node_display.rowconfigure(3, weight=1)
 
 
 sa_nodo = tk.StringVar(value='Punto')
@@ -122,11 +129,14 @@ nodes_dest_path_menu = tk.OptionMenu(plot_node_display, sa_nodo_path_destino_nam
 nodes_dest_path_menu.grid(row=1, column=1, padx=5, pady=5, sticky='nsew')
 
 mostrar_button = tk.Button(plot_node_display, text='Mostrar', command=lambda:
-    (show_plot_node(sa_nodo.get(), plot_display),show_shortest_path(sa_nodo_path_origen_name.get(), sa_nodo_path_destino_name.get(), plot_display), actualizar_listas()))
+    (show_plot_node_or_reachability(sa_nodo.get(), plot_display),show_shortest_path(sa_nodo_path_origen_name.get(), sa_nodo_path_destino_name.get(), plot_display), actualizar_listas()))
 mostrar_button.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
 
 back_button = tk.Button(plot_node_display, text='Volver al plot', command=lambda: show_initial_plot(plot_display, actualizar_listas))
 back_button.grid(row=2, column=1, padx=5, pady=5, sticky='nsew')
+
+show_shortest_path_google_earth_button = tk.Button(plot_node_display, text='Mostrar path en google earth', command=lambda: display_shortest_path_google_earth_interface(sa_nodo_path_origen_name.get(), sa_nodo_path_destino_name.get()))
+show_shortest_path_google_earth_button.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky='nsew')
 
 #Botones y menu desplegable para crear segmentos(las funciones asociadas en interface_functions.py)
 segment_creator_display = tk.LabelFrame(left_panel, text='Crear segmentos')
@@ -169,6 +179,15 @@ segments_option_menu.grid(row=0, column=1, padx=5, pady=5, sticky='nsew')
 
 delete_button = tk.Button(nodes_segments_deleter_display, text='Borrar', command=lambda: (borrar_punto_segmento(actualizar_listas, plot_display, sa_nodo_borrar.get(), sa_segmento_borrar.get()), actualizar_listas())) #Pasamos el argumento actualizar_listas(explicación en línea 143)
 delete_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky='nsew')
+
+
+google_earth_display = tk.LabelFrame(left_panel, text= 'Display en google earth')
+google_earth_display.grid(row=4, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.W + tk.S)
+google_earth_display.columnconfigure(0, weight=1)
+google_earth_display.rowconfigure(0, weight=1)
+
+display_button = tk.Button(google_earth_display, text='Abrir en google earth', command=lambda: display_google_earth_interface()) #Pasamos el argumento actualizar_listas(explicación en línea 143)
+display_button.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
 show_initial_plot(plot_display, actualizar_listas) #Esto nos permitirá mostrar nuestro plot inicialmente en la interfaz, tenemos que pasarle actualizar_listas porque esa función la requerimos para el evento de clic que nos crea puntos, lo que hará que al crear se actualicen las listas
 

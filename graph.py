@@ -104,19 +104,20 @@ class Graph:
         found, nodes, list_nodes = False, self.nodes, []
         fig, ax = plt.subplots(figsize=(16, 8))  # Ventana más grande
         ax.set_title(f'Información de {name}')
+        plt.grid(True)
 
         for node in self.nodes:
             list_nodes.append(node) #metemos todos los nodos en una lista
             if node.name == name:
                 found_node, found = node, True
                 ax.scatter(found_node.lon, found_node.lat, color='blue') #el nodo que queremos información lo ponemos en azul
-                ax.text(found_node.lon + 0.3, found_node.lat + 0.3, found_node.name, color='black', size=7)
+                ax.text(found_node.lon + 0.03, found_node.lat + 0.03, found_node.name, color='black', size=7)
                 list_nodes.remove(node) #borramos el nodo principal de la lista
         if found: #En caso de que el nodo que queremos información exista haremos el plot
             for nei_node in found_node.vecinos:
                 #print(nei_node.name)
                 ax.scatter(nei_node.lon,nei_node.lat, color='green') #los nodos vecinos del principal en verde
-                ax.text(nei_node.lon + 0.3, nei_node.lat + 0.3, nei_node.name, color='black', size=7)
+                ax.text(nei_node.lon + 0.03, nei_node.lat + 0.03, nei_node.name, color='black', size=7)
                 list_nodes.remove(nei_node) # los borramos de la lista
             #print('-------------------------')
             for segment in self.segments:
@@ -130,7 +131,7 @@ class Graph:
                     ax.text(x_mid, y_mid, round(segment.distance, 2), color='black', fontsize=10, ha='center', va='center')
             for node in list_nodes: #finalmente los nodos restantes en la lista son los que no son ni el principal ni los vecinos por tanto los ponemos en gris
                 ax.scatter(node.lon, node.lat, color='gray')
-                ax.text(node.lon+0.3,node.lat+0.3, node.name, color='black', size=7)
+                ax.text(node.lon+0.03,node.lat+0.03, node.name, color='black', size=7)
             if test: #en caso de que sea un test el argumento será true, por default es False
                 plt.show()
             else:
@@ -177,82 +178,278 @@ class Graph:
         except:
             return 'error', 'error'
 
-
-    def find_shortest_path(self, origin, destination, test=False):
-        origin_node, destination_node, fin, previous_node = '', '', False, None
-        for point in self.airports:
-            print(point.name, point.sid.name, point.star.name)
-            if point.name == origin:
-                origin_node = point.sid
-            elif point.name == destination:
-                destination_node = point.star
-            if origin_node and destination_node:
-                fin = True
+    def show_reachability(self, origin_name, test=None):
+        origin_node = None
+        for node in self.nodes:
+            if node.name == origin_name:
+                origin_node = node
                 break
-        if not fin:
-            print("Origen o destino no encontrado.dddd")
+        if not origin_node:
+            print(f"❌ Nodo {origin_name} no encontrado.")
             return
-        print(origin_node.name, destination_node.name)
-        # Inicializamos variables para la búsqueda del camino
-        final_path = False  # Flag para indicar si encontramos el camino
-        last_node = origin_node  # Empezamos desde el nodo de origen
-        print(origin_node)
-        path_follower = []  # Lista para seguir el camino actual
-        while not final_path:
-            # Exploramos los nodos vecinos del nodo actual
-            for neight in last_node.vecinos:
-                if neight != previous_node:  # Evitamos retroceder al nodo anterior
-                    if not path_follower:
-                        current_path = [origin_node, neight]  # Si es el primer movimiento
-                    else:
-                        current_path = path_follower.copy()  # Continuamos desde el camino actual
-                        current_path.append(neight)
 
-                    # Calculamos la distancia total del camino actual
-                    distancia = 0
-                    for i in range(len(current_path) - 1):
-                        distancia += distance(current_path[i], current_path[i + 1])
+        # BFS sin deque: usamos una lista como cola
+        visited = set()
+        queue = [origin_node]
+        visited.add(origin_node.name)
 
-                    # Creamos un objeto Path y lo agregamos a la lista de caminos posibles
-                    p = Path(last_node, neight, distancia, current_path)
-                    self.paths.append(p)
+        while queue:
+            current = queue.pop(0)  # Sacamos el primer elemento (FIFO)
+            for seg in self.segments:
+                if seg.origin.name == current.name and seg.dest.name not in visited:
+                    visited.add(seg.dest.name)
+                    queue.append(seg.dest)
 
-            # Si no hay caminos posibles, devolvemos error
-            if not self.paths:
-                print("No hay camino disponible hacia el destino.")
-                return 'error', 'error'
-
-            # Ordenamos los caminos posibles sumando su distancia más la distancia estimada al destino
-            self.paths.sort(key=lambda path: path.distance + distance(path.destino, destination_node))
-
-            # Seleccionamos el mejor camino (el primero de la lista ordenada)
-            last_path = self.paths[0]
-            last_node = last_path.destino  # Avanzamos al siguiente nodo
-
-            # (Opcional) Mostramos en consola los caminos posibles para depuración
-            '''
-            for path in self.paths:
-                camino_array = [node.name for node in path.camino]
-                print(camino_array, path.distance, path.distance + distance(path.destino, destination_node))
-            print('-------------------------')
-            '''
-            # Si llegamos al nodo destino, terminamos
-            if last_node.name == destination_node.name:
-                final_path = True
+        # Dibujamos los nodos
+        fig, ax = plt.subplots(figsize=(16, 8))
+        for node in self.nodes:
+            color = 'red' if node.name == origin_name else ('green' if node.name in visited else 'gray')
+            ax.plot(node.lon, node.lat, 'o', color=color)
+            if color == 'red':
+                ax.text(node.lon, node.lat, f' {node.name}', fontsize=10, color=color)
             else:
-                self.paths.pop(0)  # Eliminamos el camino usado
-                previous_node = last_path.inicio  # Actualizamos el nodo previo
-                path_follower = last_path.camino  # Actualizamos el camino seguido
+                ax.text(node.lon, node.lat, f' {node.name}', fontsize=8)
 
-        # Mostramos que encontramos el camino
-        print("Camino encontrado:")
-        fig, ax = last_path.path_plot(self, origin, destination)  # Graficamos el camino encontrado
-        self.paths.clear()  # Limpiamos la lista de caminos para futuras búsquedas
-        # Devolvemos la figura y los ejes de la gráfica
+        # Dibujamos los segmentos
+        for seg in self.segments:
+            x_org, x_dest = seg.origin.lon, seg.dest.lon
+            y_org, y_dest = seg.origin.lat, seg.dest.lat
+            if seg.origin.name in visited and seg.dest.name in visited:
+                ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org),
+                        arrowprops=dict(arrowstyle='->', color='blue', lw=1))  # hacemos los segmentos que los unen
+            else:
+                ax.plot([x_org, x_dest], [y_org, y_dest], color='gray', linestyle='--', lw=1)
+
+        ax.set_title(f'Nodos alcanzables desde {origin_name}')
+        plt.xlabel('Longitud')
+        plt.ylabel('Latitud')
+        plt.grid(True)
         if test:
-            ax.show()
+            plt.show()
         else:
             return fig, ax
+
+    def find_shortest_path(self, origin, destination, test=False):
+        origin_node, destination_node = None, None
+        self.paths.clear()
+        # Buscar los nodos de inicio y destino
+        if not self.airports:
+            for point in self.nodes:
+                if point.name == origin:
+                    origin_node = point
+                elif point.name == destination:
+                    destination_node = point
+                if origin_node and destination_node:
+                    break
+        else:
+            for point in self.airports:
+                if point.name == origin:
+                    origin_node = point.sid
+                elif point.name == destination:
+                    destination_node = point.star
+                if origin_node and destination_node:
+                    break
+
+        if not origin_node or not destination_node:
+            print("❌ Origen o destino no encontrado.")
+            return 'error', 'error'
+
+        print(f"🔍 Ejecutando busqueda desde {origin_node.name} a {destination_node.name}")
+
+        open_list = [{
+            'node': origin_node,
+            'path': [origin_node],
+            'g': 0,  # coste desde el inicio
+            'f': distance(origin_node, destination_node)  # estimación total f = g + h
+        }]
+
+        visited = set()
+
+        while open_list:
+            # Ordenar la lista abierta según menor f (g + h)
+            open_list.sort(key=lambda item: item['f'])
+            current = open_list.pop(0)
+            current_node = current['node']
+            current_path = current['path']
+            current_g = current['g']
+
+            if current_node == destination_node:
+                print("✅ Camino encontrado")
+                total_path = Path(None, destination_node, current_g, current_path)
+                fig, ax = total_path.path_plot(self, origin, destination)
+                self.paths.append(total_path)
+                if test:
+                    ax.show()
+                return fig, ax
+
+            if current_node in visited:
+                continue
+            visited.add(current_node)
+
+            # Expandir vecinos
+            for neighbor in current_node.vecinos:
+                if neighbor not in visited:
+                    g_new = current_g + distance(current_node, neighbor)
+                    h = distance(neighbor, destination_node)
+                    f_new = g_new + h
+                    open_list.append({
+                        'node': neighbor,
+                        'path': current_path + [neighbor],
+                        'g': g_new,
+                        'f': f_new
+                    })
+
+        print("❌ No se encontró camino.")
+        return 'error', 'error'
+
+    def register_kml_file(self):
+        import os
+        f = open('data/google_earth/showplot.kml', 'w')
+        f.write('<kml xmlns="http://www.opengis.net/kml/2.2"><Document>')
+        for node in self.nodes:
+            f.write(f'<Placemark><name>{node.name}</name><Point><coordinates>{node.lon},{node.lat}</coordinates></Point></Placemark>')
+        for segment in self.segments:
+            f.write(f'<Placemark><name>{segment.name}</name><LineString><extrude>1</extrude><tesellate>1</tesellate><altitudeMode>absolute</altitudeMode><coordinates>{segment.origin.lon},{segment.origin.lat},4000\n{segment.dest.lon},{segment.dest.lat},2000</coordinates></LineString></Placemark>')
+        f.write('</Document></kml>')
+        f.close()
+
+        show_plot = "data/google_earth/showplot.kml"
+        plot_absoluto = os.path.abspath(show_plot)
+        if os.path.exists(plot_absoluto) :
+            os.startfile(plot_absoluto)
+        else:
+            print("❌ El archivo no se encuentra en esa ruta.")
+
+    def show_shortest_path_on_google_earth_animation(self):
+        import os
+        # Creamos un diccionario para acceder rápido a los segmentos
+        segment_dict = {(seg.origin.name, seg.dest.name): seg for seg in self.segments}
+        path = self.paths[0].camino
+        kml_path = 'data/google_earth/shortest_path_animation.kml'
+
+        with open(kml_path, 'w', encoding='utf-8') as f:
+            f.write('''<?xml version="1.0" encoding="UTF-8"?>
+            <kml xmlns="http://www.opengis.net/kml/2.2"
+                xmlns:gx="http://www.google.com/kml/ext/2.2">
+            <Document>
+                ''')
+
+            # Estilo de línea y polígonos
+            f.write('''
+                <Style id="lineStyle">
+                    <LineStyle>
+                        <color>7f00ffff</color>
+                        <width>4</width>
+                    </LineStyle>
+                    <PolyStyle>
+                        <color>7f00ff00</color>
+                    </PolyStyle>
+                </Style>
+                <Style id="planeIcon">
+                    <IconStyle>
+                        <scale>1.2</scale>
+                        <Icon>
+                            <href>http://maps.google.com/mapfiles/kml/shapes/airports.png</href>
+                        </Icon>
+                    </IconStyle>
+                </Style>
+                ''')
+
+            # Añadimos los puntos
+            for point in path:
+                f.write(f'''
+                    <Placemark>
+                        <name>{point.name}</name>
+                        <Point>
+                            <coordinates>{point.lon},{point.lat}</coordinates>
+                        </Point>
+                    </Placemark>
+                    ''')
+
+            h_max = 10000  # altura máxima
+            n = len(path)
+            velocidad_kmh = 800
+            escala_tiempo = 60
+
+            altitudes = [
+                int(h_max * (1 - ((2 * i / (n - 1)) - 1) ** 2))
+                for i in range(n)
+            ]
+
+            # Líneas entre puntos
+            for i in range(len(path) - 1):
+                seg = segment_dict.get((path[i].name, path[i + 1].name))
+                if seg:
+                    alt1 = altitudes[i]
+                    alt2 = altitudes[i + 1]
+                    f.write(f'''
+                        <Placemark>
+                            <name>{seg.name}</name>
+                            <styleUrl>#lineStyle</styleUrl>
+                            <LineString>
+                                <extrude>1</extrude>
+                                <tessellate>1</tessellate>
+                                <altitudeMode>absolute</altitudeMode>
+                                <coordinates>
+                                    {seg.origin.lon},{seg.origin.lat},{alt1}
+                                    {seg.dest.lon},{seg.dest.lat},{alt2}
+                                </coordinates>
+                            </LineString>
+                        </Placemark>
+                        ''')
+
+            # Avión (icono inicial)
+            f.write(f'''
+                <Placemark id="airplane">
+                    <name>Avión</name>
+                    <styleUrl>#planeIcon</styleUrl>
+                    <Point>
+                        <coordinates>{path[0].lon},{path[0].lat},{altitudes[0]}</coordinates>
+                    </Point>
+                </Placemark>
+                ''')
+
+            # Animación
+            f.write('''
+                <gx:Tour>
+                    <name>Vuelo animado</name>
+                    <gx:Playlist>
+                ''')
+
+            for i in range(len(path) - 1):
+                p1, p2 = path[i], path[i + 1]
+                alt1, alt2 = altitudes[i], altitudes[i + 1]
+                d_km = distance(p1, p2)
+                dur_seg = (d_km / velocidad_kmh) * 3600 / escala_tiempo
+
+                f.write(f'''
+                <gx:FlyTo>
+                    <gx:duration>{dur_seg:.2f}</gx:duration>
+                    <gx:flyToMode>smooth</gx:flyToMode>
+                    <LookAt>
+                        <longitude>{p2.lon}</longitude>
+                        <latitude>{p2.lat}</latitude>
+                        <altitude>{alt2}</altitude>
+                        <heading>0</heading>
+                        <tilt>60</tilt>
+                        <range>1000</range>
+                        <altitudeMode>absolute</altitudeMode>
+                    </LookAt>
+                </gx:FlyTo>
+        ''')
+            f.write('''
+                    </gx:Playlist>
+                </gx:Tour>
+                ''')
+            f.write('</Document></kml>')
+
+        # Abrimos el archivo en Google Earth si existe
+        kml_abs_path = os.path.abspath(kml_path)
+        if os.path.exists(kml_abs_path):
+            os.startfile(kml_abs_path)
+        else:
+            print("❌ El archivo no se encuentra en esa ruta.")
+
 
 def distance(point1, point2):
     """
@@ -270,3 +467,4 @@ def distance(point1, point2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
     return R * c  # Resultado en kilómetros
+

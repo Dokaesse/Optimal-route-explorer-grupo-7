@@ -34,7 +34,7 @@ class Path:
         return fin
 
     def path_plot(self, g, origen, destination):
-        fig, ax = plt.subplots(figsize=(12, 8))  # Ventana más grande
+        fig, ax = plt.subplots(figsize=(16, 8))  # Ventana más grande
         ax.set_title(f'Distancia {round(self.distance, 2)}km entre {origen} a {destination}')
 
         list_nodes = []
@@ -43,7 +43,7 @@ class Path:
         for node in g.nodes:
             list_nodes.append(node)
             for path_node in self.camino:
-                if node.ident == path_node.ident:
+                if node.name == path_node.name:
                     ax.scatter(node.lon, node.lat, color='blue')
                     ax.text(node.lon + 0.03, node.lat + 0.03, node.name, color='black', size=7)
                     list_nodes.remove(node)
