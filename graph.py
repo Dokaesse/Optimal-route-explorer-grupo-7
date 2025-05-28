@@ -349,7 +349,7 @@ class Graph:
                     <IconStyle>
                         <scale>1.2</scale>
                         <Icon>
-                            <href>http://maps.google.com/mapfiles/kml/shapes/airports.png</href>
+                            <href>https://www.pngarts.com/files/5/Airplane-Free-PNG-Image.png</href>
                         </Icon>
                     </IconStyle>
                 </Style>
@@ -436,7 +436,7 @@ class Graph:
                         <altitudeMode>absolute</altitudeMode>
                     </LookAt>
                 </gx:FlyTo>
-        ''')
+                ''')
             f.write('''
                     </gx:Playlist>
                 </gx:Tour>
