@@ -180,7 +180,7 @@ segments_option_menu.grid(row=0, column=1, padx=5, pady=5, sticky='nsew')
 delete_button = tk.Button(nodes_segments_deleter_display, text='Borrar', command=lambda: (borrar_punto_segmento(actualizar_listas, plot_display, sa_nodo_borrar.get(), sa_segmento_borrar.get()), actualizar_listas())) #Pasamos el argumento actualizar_listas(explicación en línea 143)
 delete_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky='nsew')
 
-
+#Boton y display para mostrar en google earth el plot
 google_earth_display = tk.LabelFrame(left_panel, text= 'Display en google earth')
 google_earth_display.grid(row=4, column=0, padx=5, pady=5, sticky=tk.N + tk.E + tk.W + tk.S)
 google_earth_display.columnconfigure(0, weight=1)

@@ -4,7 +4,7 @@ from navSegments import *
 from navAirspace import *
 from graph import *
 s = navSpace()
-def load_data_file(points, aero, segments):
+def load_data_file(points, aero, segments): #Función para registar de los archivos los mapas predeterminados de Cataluña, España y Europa
     try:
         space.segments.clear()
         space.nodes.clear()

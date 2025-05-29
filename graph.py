@@ -188,13 +188,13 @@ class Graph:
             print(f"❌ Nodo {origin_name} no encontrado.")
             return
 
-        # BFS sin deque: usamos una lista como cola
+        #usamos una lista como cola
         visited = set()
         queue = [origin_node]
         visited.add(origin_node.name)
 
         while queue:
-            current = queue.pop(0)  # Sacamos el primer elemento (FIFO)
+            current = queue.pop(0)  # Sacamos el primer elemento
             for seg in self.segments:
                 if seg.origin.name == current.name and seg.dest.name not in visited:
                     visited.add(seg.dest.name)
@@ -214,11 +214,11 @@ class Graph:
         for seg in self.segments:
             x_org, x_dest = seg.origin.lon, seg.dest.lon
             y_org, y_dest = seg.origin.lat, seg.dest.lat
-            if seg.origin.name in visited and seg.dest.name in visited:
+            if seg.origin.name in visited and seg.dest.name in visited: #comprobamos si estan en la lista de visitados si lo están podedmos asegurar que se pueden llegar
                 ax.annotate('', xy=(x_dest, y_dest), xytext=(x_org, y_org),
                         arrowprops=dict(arrowstyle='->', color='blue', lw=1))  # hacemos los segmentos que los unen
             else:
-                ax.plot([x_org, x_dest], [y_org, y_dest], color='gray', linestyle='--', lw=1)
+                ax.plot([x_org, x_dest], [y_org, y_dest], color='gray', linestyle='--', lw=1) #dibujamos aquellos segmentos que no unen
 
         ax.set_title(f'Nodos alcanzables desde {origin_name}')
         plt.xlabel('Longitud')
@@ -233,7 +233,7 @@ class Graph:
         origin_node, destination_node = None, None
         self.paths.clear()
         # Buscar los nodos de inicio y destino
-        if not self.airports:
+        if not self.airports: #en el caso de no tener aeropuertos utilizamos como referencia los nodos y buscamos en ellos los que coincidan de nombre en self.nodes para tener el objeto el nodo
             for point in self.nodes:
                 if point.name == origin:
                     origin_node = point
@@ -242,7 +242,7 @@ class Graph:
                 if origin_node and destination_node:
                     break
         else:
-            for point in self.airports:
+            for point in self.airports: #en el caso de tener aeropuertos iteramos en el vector y si encontramos el nombmre ddel aeropuerto, ponemos como nodo de origen el .sid y en el de llegada o destino ponemos el .star
                 if point.name == origin:
                     origin_node = point.sid
                 elif point.name == destination:
@@ -250,30 +250,30 @@ class Graph:
                 if origin_node and destination_node:
                     break
 
-        if not origin_node or not destination_node:
+        if not origin_node or not destination_node: #En caso de no encontrar ni uno ni otro devuelve error(esto realmente no pasará nunca ya que los datos se introducen directamente de las listas en las que buscamos)
             print("❌ Origen o destino no encontrado.")
             return 'error', 'error'
 
         print(f"🔍 Ejecutando busqueda desde {origin_node.name} a {destination_node.name}")
 
-        open_list = [{
+        open_list = [{ #creamos una lista que contendrá sets, los sets son como una especie de lista pero donde no puedes cambiar valores
             'node': origin_node,
             'path': [origin_node],
             'g': 0,  # coste desde el inicio
             'f': distance(origin_node, destination_node)  # estimación total f = g + h
         }]
 
-        visited = set()
+        visited = set() #otro set para ver si ya hemos visitado un camino ya que si lo hacemos y seguimos iterando entramos en un bucle infinito
 
-        while open_list:
+        while open_list: #iteramos en la lista para encontrar resultados
             # Ordenar la lista abierta según menor f (g + h)
             open_list.sort(key=lambda item: item['f'])
-            current = open_list.pop(0)
+            current = open_list.pop(0) #cogemos el nodo y lo eliminamos de open_list para poder después de ese ver sus vecinos
             current_node = current['node']
             current_path = current['path']
             current_g = current['g']
 
-            if current_node == destination_node:
+            if current_node == destination_node: #si el nodo es el de destino acabamos el loop, creamos el path y desplegamos el gráfico
                 print("✅ Camino encontrado")
                 total_path = Path(None, destination_node, current_g, current_path)
                 fig, ax = total_path.path_plot(self, origin, destination)
@@ -282,12 +282,12 @@ class Graph:
                     ax.show()
                 return fig, ax
 
-            if current_node in visited:
+            if current_node in visited: #este código nos permite meter en el set visited todos esos caminos que ya hayamos visitado para no entrar en un loop infinito
                 continue
             visited.add(current_node)
 
             # Expandir vecinos
-            for neighbor in current_node.vecinos:
+            for neighbor in current_node.vecinos: #Entramos en los vecinos del nodo seleccionado como el camino mas corto desarolamos caminos con ese nodo vecino y repetimos el loop
                 if neighbor not in visited:
                     g_new = current_g + distance(current_node, neighbor)
                     h = distance(neighbor, destination_node)
@@ -302,19 +302,19 @@ class Graph:
         print("❌ No se encontró camino.")
         return 'error', 'error'
 
-    def register_kml_file(self):
+    def register_kml_file(self): #Esta función nos permite registrar un archivo kml con nuestro plot y abrirlo en google earth
         import os
-        f = open('data/google_earth/showplot.kml', 'w')
-        f.write('<kml xmlns="http://www.opengis.net/kml/2.2"><Document>')
-        for node in self.nodes:
+        f = open('data/google_earth/showplot.kml', 'w') #Abrimos el archivo para editar
+        f.write('<kml xmlns="http://www.opengis.net/kml/2.2"><Document>') #Esto se tiene que poner siempre ya que es la estructura de kml
+        for node in self.nodes: #Iteramos en los nodos para dibujarlos
             f.write(f'<Placemark><name>{node.name}</name><Point><coordinates>{node.lon},{node.lat}</coordinates></Point></Placemark>')
-        for segment in self.segments:
+        for segment in self.segments: #Iteramos en los segmentos para dibujarlos tambien
             f.write(f'<Placemark><name>{segment.name}</name><LineString><extrude>1</extrude><tesellate>1</tesellate><altitudeMode>absolute</altitudeMode><coordinates>{segment.origin.lon},{segment.origin.lat},4000\n{segment.dest.lon},{segment.dest.lat},4000</coordinates></LineString></Placemark>')
         f.write('</Document></kml>')
         f.close()
 
         show_plot = "data/google_earth/showplot.kml"
-        plot_absoluto = os.path.abspath(show_plot)
+        plot_absoluto = os.path.abspath(show_plot) #Utilizamos la libreria os para poder abir el archivo de manera exterior
         if os.path.exists(plot_absoluto) :
             os.startfile(plot_absoluto)
         else:
@@ -327,7 +327,7 @@ class Graph:
         path = self.paths[0].camino
         kml_path = 'data/google_earth/shortest_path_animation.kml'
 
-        with open(kml_path, 'w', encoding='utf-8') as f:
+        with open(kml_path, 'w', encoding='utf-8') as f: #abrimos el archivo para dibujar nuestro path y la animación
             f.write('''<?xml version="1.0" encoding="UTF-8"?>
             <kml xmlns="http://www.opengis.net/kml/2.2"
                 xmlns:gx="http://www.google.com/kml/ext/2.2">
@@ -374,14 +374,14 @@ class Graph:
             altitudes = [
                 int(h_max * (1 - ((2 * i / (n - 1)) - 1) ** 2))
                 for i in range(n)
-            ]
+            ] #creamos un vector con las altitudes calculadas con una fórmula matematica para dar una especie de realismo al path en google earth
 
             # Líneas entre puntos
             for i in range(len(path) - 1):
                 seg = segment_dict.get((path[i].name, path[i + 1].name))
                 if seg:
                     alt1 = altitudes[i]
-                    alt2 = altitudes[i + 1]
+                    alt2 = altitudes[i + 1] #dibujamos los segmentos poniendo alturas diferentes, la de origen con el indice i y el destino con el indice i+1
                     f.write(f'''
                         <Placemark>
                             <name>{seg.name}</name>
@@ -416,11 +416,11 @@ class Graph:
                     <gx:Playlist>
                 ''')
 
-            for i in range(len(path) - 1):
+            for i in range(len(path) - 1): #Hacemos un loop para dibujar la animación del vuelo
                 p1, p2 = path[i], path[i + 1]
                 alt1, alt2 = altitudes[i], altitudes[i + 1]
                 d_km = distance(p1, p2)
-                dur_seg = (d_km / velocidad_kmh) * 3600 / escala_tiempo
+                dur_seg = (d_km / velocidad_kmh) * 3600 / escala_tiempo #La duración del tiempo entre segmentos es un calculo real con la distancia entre segmentos y una velocidad media de unos 800km/h, lo dividimos por una escala para que no dure tanto la animación
 
                 f.write(f'''
                 <gx:FlyTo>

@@ -206,7 +206,7 @@ def show_plot_node_or_reachability(sa_nodo, plot_display): #Con esta función mo
     elif sa_nodo != 'Punto':
         messagebox.showerror('ERROR🛑', 'No se ha podido mostrar información del punto!!')
 
-def show_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu, plot_display):
+def show_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu, plot_display): #Función para mostrar en la interfaz el camino mas corto
     print(nodes_origin_path_menu, nodes_dest_path_menu)
     if nodes_origin_path_menu != 'Origen' and nodes_dest_path_menu != 'Destino':
         fig, ax = space.find_shortest_path(nodes_origin_path_menu, nodes_dest_path_menu)
@@ -266,7 +266,7 @@ def borrar_punto_segmento(actualizar_listas, plot_display, nodo_name, segment_na
         #print('juan')
         show_initial_plot(plot_display, actualizar_listas)
 
-def display_google_earth_interface():
+def display_google_earth_interface(): #Función asociada al boton para abrir el google eath y mostrar el plot
     space.register_kml_file()
 
 def display_shortest_path_google_earth_interface(origen, destino):

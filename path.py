@@ -33,7 +33,7 @@ class Path:
                 break
         return fin
 
-    def path_plot(self, g, origen, destination):
+    def path_plot(self, g, origen, destination): #Función para dibujar el plot del path creado
         fig, ax = plt.subplots(figsize=(16, 8))  # Ventana más grande
         ax.set_title(f'Distancia {round(self.distance, 2)}km entre {origen} a {destination}')
 
